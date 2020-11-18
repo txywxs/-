@@ -1,23 +1,15 @@
 import bs4
 import requests
 import re,os
+headers = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/86.0.4240.111 '
+                  'Safari/537.36 '
+}
 url = 'https://www.souutu.com/mnmm/mote/16925.html'
-rest = r"\d/(\d{1,2})"
 url = url
-res = requests.get(url=url)
+res = requests.get(url=url,headers=headers)
 bs = bs4.BeautifulSoup(res.text, 'lxml')
-bs_img = bs.find_all('img', id="showpicsouutuIs2020")
-bs_a = bs.find_all('a', class_="Nnext imgpage-right")
-bs_page = bs.find('div', class_="showcenter")
-cont = 0
-bs_page_max = bs_page.text
-bs_page_max = int(re.findall(rest, bs_page_max)[0])
-
-bs_img_src = bs_img[0]['src']
-bs_img_alt = bs_img[0]['alt']
-bs_a_right_href = bs_a[0]['href']
-os.mkdir("./%s" % bs_img_alt)
-with open('./%s/%s.jpg' % (bs_img_alt, cont), 'wb') as f:
-    bc = requests.get(str(bs_img_src))
-    f.write(bc.content)
-    url = bs_a_right_href
+bs_img = bs.find_all('img', id="showpicsouutuIs2020")  # 查询图片
+bs_page = bs.find('span', class_="mlw")
+print(str(bs_page)[-9:-8])

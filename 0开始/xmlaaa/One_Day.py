@@ -1,14 +1,21 @@
-# -*- coding:utf-8 -*-
-import requests
-from bs4 import BeautifulSoup
+from multiprocessing import Process
 
-urls = 'https://www.shicimingju.com/book/sanguoyanyi.html'
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                  'Chrome/85.0.4183.121 Safari/537.36 '
-}
-page_text = requests.get(urls, headers=headers).text
-soup = BeautifulSoup(page_text, 'lxml')
-soup_a = soup.find_all("li")
-for i in soup_a:
-    print(i.a['href'])
+import os
+
+import time
+
+def run_proc(name, age, **kwargs):
+
+       for i in range(10):
+
+              print("姓名是: %s, 年龄是: %s"% (name, age))
+
+              print(kwargs)
+
+              time.sleep(0.3)
+
+if __name__ == "__main__":
+
+       p = Process(target=run_proc,args=("王多鱼", 20))
+
+       p.start()
