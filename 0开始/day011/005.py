@@ -22,8 +22,8 @@ async def main():
     await page.goto('https://kyfw.12306.cn/otn/resources/login.html')
     await asyncio.sleep(3)
     await page.click('.login-hd-account')
-    await page.type('#J-userName', '123123', {'delay': input_time_random()})
-    await page.type('#J-password', '123123', {'delay': input_time_random()})
+    await page.type('#J-userName', '15889307930', {'delay': input_time_random()})
+    await page.type('#J-password', 'lyx__123', {'delay': input_time_random()})
     # 一些网站主要通过 window.navigator.webdriver 来对 webdriver 进行检测，所以我们只需要使用 JavaScript 将它设置为 false 即可
     await page.evaluate('''() =>{ Object.defineProperties(navigator,{ webdriver:{ get: () => false } }) }''')
     yazhengma = await page.waitForSelector('#J-loginImg')  # 通过css selector定位验证码元素
@@ -49,7 +49,14 @@ async def main():
         print(a[0],a[1])
         await page.hover('#J-loginImg')
         await page.mouse.click(box['x']+int(a[0]), box['y']+int(a[1]), {'delay': random.randint(1000, 2000), 'steps': 3})
+    await page.click('#J-login')
+    await asyncio.sleep(3)
+    el = await page.querySelector('#nc_1_n1z')
+    box = await el.boundingBox()
+    await page.hover('#nc_1_n1z')  # 鼠标移动方块上
+    await page.mouse.down()  # 鼠标拖动操作包括按下、移动、放开
+    await page.mouse.move(box['x'] + 1000, box['y'], {'delay': random.randint(1000, 2000), 'steps': 3})
+    await page.mouse.up()
     await asyncio.sleep(100)
-
 
 asyncio.get_event_loop().run_until_complete(main())
