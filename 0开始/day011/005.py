@@ -28,7 +28,7 @@ async def main():
     await page.evaluate('''() =>{ Object.defineProperties(navigator,{ webdriver:{ get: () => false } }) }''')
     yazhengma = await page.waitForSelector('#J-loginImg')  # 通过css selector定位验证码元素
     await yazhengma.screenshot({'path': 'yazhengma.png'})  # 注意这里用的是ele.screenshot方法与教程1 page.screenshot是不同的
-
+    box = await yazhengma.boundingBox()
     # box = await el.boundingBox()
 
     # left = int(box.get('x'))
@@ -43,8 +43,12 @@ async def main():
     im = open('yazhengma.png', 'rb').read()
     ret = chaojiying.PostPic(im, 9004)
     xy = ret.get('pic_str')
-
-    print(xy.split('|'))
+    xy = xy.split('|')
+    for i in xy:
+        a = i.split(',')
+        print(a[0],a[1])
+        await page.hover('#J-loginImg')
+        await page.mouse.click(box['x']+int(a[0]), box['y']+int(a[1]), {'delay': random.randint(1000, 2000), 'steps': 3})
     await asyncio.sleep(100)
 
 
